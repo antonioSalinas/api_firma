@@ -12,6 +12,8 @@ use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
 
+
+
 class FirmaController extends Controller
 {
    
@@ -20,11 +22,13 @@ class FirmaController extends Controller
         $idFile=date('Ymdhis');
         $req=json_decode($request->getContent());
         $file = $request->file('archivo');
+        $request->file('archivo')->store('local');
+        //$file=$req->archivo;
         $nombre = $file->getClientOriginalName();
         echo($nombre);
-        Storage::disk('local')->put('archivo.pdf',$file);
-       // $file=Storage::disk('local')->get('archivo.pdf');
-        //$file=$req->file;
+        Storage::disk('local')->put('archivo.pdf',File::get($file));
+        $file=Storage::disk('local')->get('archivo.pdf');
+        
         $layout=Storage::disk('local')->get('layout.txt');
         $firma=Storage::disk('local')->get('firma.jpg');
         $layout = str_replace('archivo64',base64_encode($firma),$layout);
