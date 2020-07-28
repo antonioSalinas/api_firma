@@ -11,6 +11,7 @@ use GuzzleHttp\Client;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Http\Client\Response;
 use Illuminate\Http\Request;
+use File;
 
 
 
@@ -23,12 +24,10 @@ class FirmaController extends Controller
         $req=json_decode($request->getContent());
         $file = $request->file('archivo');
         $request->file('archivo')->store('local');
-        //$file=$req->archivo;
         $nombre = $file->getClientOriginalName();
         echo($nombre);
-        Storage::disk('local')->put('archivo.pdf',File::get($file));
-        $file=Storage::disk('local')->get('archivo.pdf');
-        
+        Storage::disk('local')->put($idFile.'archivo.pdf',file_get_contents($file));
+        $file=Storage::disk('local')->get($idFile.'archivo.pdf');
         $layout=Storage::disk('local')->get('layout.txt');
         $firma=Storage::disk('local')->get('firma.jpg');
         $layout = str_replace('archivo64',base64_encode($firma),$layout);
@@ -56,17 +55,10 @@ class FirmaController extends Controller
          );        
          
          $decoded = JWT::decode($jwt, $key, array('HS256'));
-        
-        // print_r('TOKEN: '.$jwt);
-        // print_r('<br>PAYLOAD :');
-        // var_dump($decoded);
-        // print_r('ARCHIVO: '.base64_encode($file));
-        
-       // print_r(json_encode($jsonToSend));
         $body=collect();
         $body=json_encode($jsonToSend);
-        //print_r($body);
         try{
+            //habilitar esta librería
         //     $client= new Client();
         //     $res = $client->post('https://api.firma.test.digital.gob.cl/firma/v2/files/tickets', [
         //    // $res = $client->post('http://localhost/api_firma/public/showPost', [
