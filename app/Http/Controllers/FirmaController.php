@@ -25,7 +25,7 @@ class FirmaController extends Controller
         $file = $request->file('archivo');
         $request->file('archivo')->store('local');
         $nombre = $file->getClientOriginalName();
-        echo($nombre);
+       // echo($nombre);
         Storage::disk('local')->put($idFile.'archivo.pdf',file_get_contents($file));
         $file=Storage::disk('local')->get($idFile.'archivo.pdf');
         $layout=Storage::disk('local')->get('layout.txt');
@@ -110,8 +110,8 @@ class FirmaController extends Controller
        
         return Storage::download($idFile."firmado.pdf",$idFile."firmado.pdf",["content-type" => "application/pdf"]);
     }
-    function testFirma()
-    {
+    function testFirma(){
+
         return view('testing');
     }
     
