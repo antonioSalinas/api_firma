@@ -33,7 +33,12 @@
 	     processData: false
             })
                 .done(function(res){
-                   // $("#mensaje").html("Respuesta: " + res);
+                    console.log(res);
+                   
+                    var respuesta= JSON.parse(res);
+                    console.log(respuesta.url);
+                    console.log(respuesta.filename);
+                    window.location=respuesta.url;
                 });
         });
     });

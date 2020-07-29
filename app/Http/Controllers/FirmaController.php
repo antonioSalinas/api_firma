@@ -108,7 +108,13 @@ class FirmaController extends Controller
         
         Storage::disk('local')->put($idFile."firmado.pdf",base64_decode($firmado));
        
-        return Storage::download($idFile."firmado.pdf",$idFile."firmado.pdf",["content-type" => "application/pdf"]);
+       // return Storage::download($idFile."firmado.pdf",$idFile."firmado.pdf",["content-type" => "application/pdf"]);
+       $url= str_replace('public','',url('/'));
+       $respuesta=array(
+           "url" => $url.'storage/app/'.$idFile."firmado.pdf",
+           "filename"=> $idFile."firmado.pdf",
+       );
+       return(json_encode($respuesta));
     }
     function testFirma(){
 
